@@ -10,26 +10,21 @@ if (!username || !password || !host || !dbName) {
   console.error('Error: One or more MongoDB environment variables are not set.');
   process.exit(1);
 }
-const uri = `mongodb://${encodeURIComponent(username)}:${encodeURIComponent(password)}@${host}:27017/${dbName}?authSource=admin`;
 
+const uri = `mongodb://${encodeURIComponent(username)}:${encodeURIComponent(password)}@${host}:27017/${dbName}?authSource=admin`;
 const client = new MongoClient(uri);
 
-async function startServer() {
-  try {
-    await client.connect();
-    console.log('Successfully connected to MongoDB!');
+try {
+  await client.connect();
+  console.log('Successfully connected to MongoDB!');
 
-    const db = client.db(dbName);
-    app.locals.db = db; 
+  const db = client.db(dbName);
+  app.locals.db = db;
 
-    app.listen(3000, () => {
-      console.log('Server running on port 3000');
-    });
-  } catch (err) {
-    console.error('Failed to connect to MongoDB', err);
-    process.exit(1);
-  }
+  app.listen(3000, () => {
+    console.log('Server running on port 3000');
+  });
+} catch (err) {
+  console.error('Failed to connect to MongoDB', err);
+  process.exit(1);
 }
-
-// 5. Run the function
-startServer();
