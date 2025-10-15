@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TODO LIST</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #f4f4f4;
+    }
+    .container {
+      background: white;
+      padding: 2em;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 300px;
+    }
+    input, button {
+      font-size: 1em;
+      padding: 0.5em;
+      margin-top: 1em;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    ul {
+      margin-top: 1em;
+      padding-left: 0;
+      list-style: none;
+      text-align: left;
+    }
+    li {
+      background: #eaeaea;
+      margin-bottom: 0.5em;
+      padding: 0.5em;
+      border-radius: 4px;
+    }
+    footer {
+      margin-top: 2em;
+      font-size: 0.9em;
+      color: #555;
+      text-align: center;
+    }
+    a {
+      color: #0077b5;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TODO LIST</h1>
+    <input type="text" id="todoInput" placeholder="Enter task.." />
+    <button onclick="addTodo()">Add Todo</button>
+    <ul id="todoList"></ul>
+  </div>
+
+  <footer>
+    <p>Connect with me on <a href="https://www.linkedin.com/in/ritikgupta-/" target="_blank">LinkedIn</a></p>
+    <p>&copy; 2025 Ritik Gupta. All rights reserved.</p>
+  </footer>
+
+<script type="module">
+  async function fetchTodos() {
+    const res = await fetch('/api/todos');
+    const todos = await res.json();
+    const list = document.getElementById('todoList');
+    list.innerHTML = '';
+    for (const todo of todos) {
+      const li = document.createElement('li');
+      li.textContent = todo.task || JSON.stringify(todo);
+      list.appendChild(li);
+    }
+  }
+  async function addTodo() {
+    const input = document.getElementById('todoInput');
+    const task = input.value.trim();
+    if (!task) return;
+    await fetch('/api/todos', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ task })
+    });
+    input.value = '';
+    await fetchTodos();
+  }
+  globalThis.addTodo = addTodo;
+
+  await fetchTodos();
+</script>
+
+</body>
+</html>

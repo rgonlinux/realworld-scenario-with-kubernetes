@@ -1,0 +1,121 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - src/**
+  pull_request:
+    paths:
+      - src/**
+
+env:
+  REGISTRY: docker.io
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USER }}/nodejs-todo-app
+  IMAGE_TAG: ${{ github.sha }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install && npm ci
+
+      - name: Run tests with coverage
+        run: npm test -- --coverage
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: src/coverage/lcov.info
+
+  static-analysis:
+    needs: test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+
+      # - name: Move lcov.info to root
+      #   run: mv coverage-report/lcov.info .
+
+      - name: List all files with details
+        run: echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@" && ls -laR
+
+      - name: Move lcov.info into projectBaseDir
+        run: mv ${{ github.workspace }}/lcov.info ${{ github.workspace }}/src/lcov.info
+
+      - name: Confirm lcov.info is in projectBaseDir
+        run: ls -la ${{ github.workspace }}/src/lcov.info
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          projectBaseDir: "src"
+          args: >
+            -Dsonar.projectKey=rgonlinux_realworld-scenario-with-kubernetes
+            -Dsonar.organization=rgonlinux
+            -Dsonar.javascript.lcov.reportPaths=lcov.info
+            -Dsonar.qualitygate.wait=true
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+
+  build:
+    needs: static-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to DockerHub Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASS }}
+
+      - name: Build Docker Image
+        run: |
+          docker build -f Dockerfile.prod \
+            -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
+            "src/"
+      - name: Save Docker image to tar
+        run: |
+          docker save ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
+            -o image.tar
+      - name: Trivy Image Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          input: image.tar
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL'
+
+      - name: Push Docker Image
+        if: success()
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
