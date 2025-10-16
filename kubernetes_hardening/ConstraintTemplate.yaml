@@ -1,0 +1,51 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8srequiredsettings
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRequiredSettings
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8srequiredsettings
+
+        is_pod_or_deployment {
+          input.review.kind.kind == "Pod"
+        }
+
+        is_pod_or_deployment {
+          input.review.kind.kind == "Deployment"
+        }
+
+        containers := input.review.object.spec.containers {
+          input.review.kind.kind == "Pod"
+        }
+
+        containers := input.review.object.spec.template.spec.containers {
+          input.review.kind.kind == "Deployment"
+        }
+
+        violation[{"msg": msg}] {
+          is_pod_or_deployment
+          container := containers[_]
+          not container.securityContext.runAsNonRoot
+          msg := sprintf("Container %v must set runAsNonRoot to true", [container.name])
+        }
+
+        violation[{"msg": msg}] {
+          is_pod_or_deployment
+          container := containers[_]
+          not container.resources.limits
+          msg := sprintf("Container %v must set resource limits", [container.name])
+        }
+
+        violation[{"msg": msg}] {
+          is_pod_or_deployment
+          container := containers[_]
+          not container.resources.requests
+          msg := sprintf("Container %v must set resource requests", [container.name])
+        }
+

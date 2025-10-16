@@ -1,0 +1,15 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredSettings
+metadata:
+  name: enforce-nonroot-and-resources
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+      - apiGroups: ["apps"]
+        kinds: ["Deployment"]
+    excludedNamespaces:
+      - local-path-storage # For your local setup
+      - kube-system        # For EKS components like the EBS driver
+      - gatekeeper-system  # Good practice to exclude Gatekeeper itself
