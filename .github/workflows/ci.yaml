@@ -100,8 +100,7 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build -f Dockerfile.prod \
-            -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
-            "src/"
+            -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
       - name: Save Docker image to tar
         run: |
           docker save ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
