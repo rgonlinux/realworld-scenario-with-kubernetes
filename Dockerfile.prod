@@ -18,6 +18,7 @@ FROM node:24.10.0-alpine3.22 AS production
 RUN addgroup -S todo && adduser -S todo -G todo
 WORKDIR /usr/src/app
 COPY --from=build /usr/src/app /usr/src/app
+RUN chown -R todo:todo /usr/src/app
 USER todo
 EXPOSE 3000
 # HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
