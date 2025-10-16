@@ -51,8 +51,8 @@ Once you deploy any pod or access secrets, the information will be stored in the
 
 - HIPAA: The technical safeguards for protecting electronic Protected Health Information (ePHI) are addressed through strict network segmentation, access logging, and enforced security configurations via Gatekeeper.
 
-*Reference -*
+#### References
 
-*https://kubernetes.io/docs/tasks/debug/debug-cluster/audit/*
-*https://secureframe.com/hub/soc-2/what-is-soc-2*
-*https://gdpr-info.eu/*
+- [Kubernetes Audit Logging Guide](https://kubernetes.io/docs/tasks/debug/debug-cluster/audit/)
+- [SOC 2 Overview – Secureframe](https://secureframe.com/hub/soc-2/what-is-soc-2)
+- [GDPR Principles – GDPR Info](https://gdpr-info.eu/)
