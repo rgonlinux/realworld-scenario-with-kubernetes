@@ -3,7 +3,7 @@
 
 This guide walks you through installing the Datadog Agent in Kubernetes, configuring alerts for `ImagePullBackOff`, and testing the setup.
 
-### 1. Log in to [Datadog](https://app.datadoghq.com/) and select your agent. The following command will be auto-populated with your credentials:
+### 1. Log in to [Datadog](https://app.datadoghq.com/) and select your agent. The following command will be auto-populated with your credentials if you chose linux:
 
 ```
 DD_API_KEY=<DD_KEY> \
@@ -17,6 +17,14 @@ bash -c "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.s
 ```
 sudo kubectl create namespace datadog
 sudo helm install datadog-agent datadog/datadog -f datadog-values.yaml --namespace datadog
+```
+
+- or use helm to install datadog -
+```
+helm repo add datadog https://helm.datadoghq.com
+helm install datadog-operator datadog/datadog-operator
+kubectl create secret generic datadog-secret --from-literal api-key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+kubectl apply -f datadog-agent.yaml
 ```
 
 ### 3. Create alert

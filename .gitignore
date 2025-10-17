@@ -1,1 +1,15 @@
 monitoring_and_logging/sec.yaml
+# Terraform state files
+go_live_with_eks/terraform/*.tfstate
+go_live_with_eks/terraform/*.tfstate.*
+go_live_with_eks/terraform/crash.log
+go_live_with_eks/terraform/*.tfplan
+go_live_with_eks/terraform/*.tfvars
+go_live_with_eks/terraform/*.tfvars.json
+go_live_with_eks/terraform/.terraform/
+go_live_with_eks/terraform/override.tf
+go_live_with_eks/terraform/override.tf.json
+go_live_with_eks/terraform/*_override.tf
+go_live_with_eks/terraform/*_override.tf.json
+go_live_with_eks/terraform/.terraformrc
+go_live_with_eks/terraform/terraform.rc

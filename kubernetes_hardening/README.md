@@ -15,7 +15,7 @@ kubectl get pods -n gatekeeper-system
 #### Apply Gatekeeper 
 ```
 kubectl apply -f ConstraintTemplate.yaml
-kubectl apply -f Constraint.yml
+kubectl apply -f Constraint.yaml
 ```
 ---
 
@@ -58,7 +58,7 @@ kubectl describe svc nodejs-service
 
 ### Cleaning up - 
 ```
-kubectl delete -f mongo-secrets.yaml,mongodb-deployment.yaml,nodejs-deployment.yaml,network-policy.yaml,ConstraintTemplate.yaml,Constraint.yml
+kubectl delete -f mongo-secrets.yaml,mongodb-deployment.yaml,nodejs-deployment.yaml,network-policy.yaml,ConstraintTemplate.yaml,Constraint.yaml
 kubectl delete -f https://raw.githubusercontent.com/open-policy-agent/gatekeeper/master/deploy/gatekeeper.yaml
 ```
 

@@ -20,8 +20,6 @@
 - Install - [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 - Install - [AWS-Cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html#getting-started-install-instructions)
 - Install - [Terrascan](https://runterrascan.io/docs/getting-started/)
-- Install - [Datadog](https://docs.datadoghq.com/containers/kubernetes/?tab=helm)
-
 
 ### Flow
 

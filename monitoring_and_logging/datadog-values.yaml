@@ -1,5 +1,3 @@
-# datadog-values.yaml
-
 datadog:
   # Replace <YOUR_DATADOG_API_KEY> with your actual API key
   apiKey: "<YOUR_DATADOG_API_KEY>"
