@@ -13,3 +13,4 @@ spec:
       - local-path-storage # For your local setup
       - kube-system        # For EKS components like the EBS driver
       - gatekeeper-system  # Good practice to exclude Gatekeeper itself
+      - datadog            
