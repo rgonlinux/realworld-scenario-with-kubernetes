@@ -1,0 +1,27 @@
+# datadog-values.yaml
+
+datadog:
+  # Replace <YOUR_DATADOG_API_KEY> with your actual API key
+  apiKey: "<YOUR_DATADOG_API_KEY>"
+
+  # Set your Datadog site.
+  # For example: datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, etc.
+  site: "<SITE_URL>"
+
+  # It's highly recommended to give your cluster a unique name
+  # This helps you filter and identify it easily in Datadog
+  clusterName: "<YOUR_CLUSTER_NAME>"
+
+  # Enable log collection
+  logs:
+    enabled: true
+    containerCollectAll: true
+
+  # Enable process monitoring
+  processAgent:
+    enabled: true
+
+  # Enable Kubernetes state metrics collection
+  # This is crucial for deep Kubernetes monitoring
+  kubeStateMetricsCore:
+    enabled: true
