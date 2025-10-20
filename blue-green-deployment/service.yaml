@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-service
+  labels:
+    app: nodejs
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+  selector:
+    app: nodejs
+    version: blue # pointing to the blue deployment
+  type: ClusterIP
