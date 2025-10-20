@@ -80,7 +80,7 @@ kubectl get networkpolicy -A
 kubectl apply -f ingress.yaml
 ```
 
-### Get ALB DNS name
+#### Get ALB DNS name
 
 ```
 kubectl get ingress nodejs-ingress
