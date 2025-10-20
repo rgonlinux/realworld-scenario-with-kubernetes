@@ -15,7 +15,7 @@ terraform apply
 ```
 > **⚠️ Important Note:**  
 > use the `tfsec` tool to identify security misconfigurations in your Terraform code
-> tfsec terraform-foldername/
+> command - **tfsec terraform-foldername/**
 
 #### Verify Kubernetes Access -
 > You're successfully authenticated and ready to manage your cluster.
