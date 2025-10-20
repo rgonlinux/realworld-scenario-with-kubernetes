@@ -13,3 +13,4 @@ go_live_with_eks/terraform/*_override.tf
 go_live_with_eks/terraform/*_override.tf.json
 go_live_with_eks/terraform/.terraformrc
 go_live_with_eks/terraform/terraform.rc
+go_live_with_eks/terraform/.terraform.lock.hcl
