@@ -38,15 +38,14 @@ CMD ["node", "server.js"]
 ## 2. **To Scan the docker image and docker file:**
 
 - Install - [trivy](https://trivy.dev/v0.18.3/installation/)
-
+> To scan dockerfile - 
 ```
-trivy config ../[Dockerfile.prod](https://github.com/rgonlinux/realworld-scenario-with-kubernetes/blob/main/Dockerfile.prod)
+trivy config ../Dockerfile.prod
 ```
-
+> To scan docker image -
 ```
 trivy image <username>/<image-name>:<tag>
 ```
-
 > - If we encounter vulnerabilities, install or remove the files or packages recommended by Trivy
 
 
@@ -56,7 +55,7 @@ trivy image <username>/<image-name>:<tag>
 docker-compose up -d --build
 ```
 > **Open your browser to access GUI application [http://localhost:3000](http://localhost:3000)**  
-> **Manual Testing - **
+> **Manual Testing -**
 > ```
 > curl -X POST http://localhost:3000/api/todos -H "Content-Type: application/json" -d '{"task":"Your Todo"}'
 > curl http://localhost:3000/api/todos
