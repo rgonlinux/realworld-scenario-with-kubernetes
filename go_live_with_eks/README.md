@@ -81,6 +81,12 @@ kubectl get networkpolicy -A
 #### -> Add Ingress
 > expose your nodejs-service to the internet
 ```
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=nodejs-app-cluster \
+  --set serviceAccount.create=true \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --set serviceAccount.annotations."eks\.amazonaws\.com/role-arn"=arn:aws:iam::<account-id>:role/nodejs-app-cluster-alb-controller-role
 kubectl apply -f ingress.yaml
 ```
 
